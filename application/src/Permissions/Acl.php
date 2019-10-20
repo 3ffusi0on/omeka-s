@@ -11,6 +11,7 @@ class Acl extends ZendAcl
     const ROLE_SITE_ADMIN = 'site_admin';
     const ROLE_EDITOR = 'editor';
     const ROLE_REVIEWER = 'reviewer';
+    const ROLE_GUEST_REVIEWER = 'guest_reviewer';
     const ROLE_AUTHOR = 'author';
     const ROLE_RESEARCHER = 'researcher';
 
@@ -22,6 +23,7 @@ class Acl extends ZendAcl
         self::ROLE_SITE_ADMIN => 'Site Administrator', // @translate
         self::ROLE_EDITOR => 'Editor', // @translate
         self::ROLE_REVIEWER => 'Reviewer', // @translate
+        self::ROLE_GUEST_REVIEWER => 'Guest Reviewer', // @translate
         self::ROLE_AUTHOR => 'Author', // @translate
         self::ROLE_RESEARCHER => 'Researcher', // @translate
     ];

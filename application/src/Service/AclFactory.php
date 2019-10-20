@@ -56,6 +56,7 @@ class AclFactory implements FactoryInterface
         $acl->addRole(Acl::ROLE_RESEARCHER)
             ->addRole(Acl::ROLE_AUTHOR)
             ->addRole(Acl::ROLE_REVIEWER)
+            ->addRole(Acl::ROLE_GUEST_REVIEWER)
             ->addRole(Acl::ROLE_EDITOR)
             ->addRole(Acl::ROLE_SITE_ADMIN)
             ->addRole(Acl::ROLE_GLOBAL_ADMIN);
@@ -130,6 +131,7 @@ class AclFactory implements FactoryInterface
         $this->addRulesForResearcher($acl);
         $this->addRulesForAuthor($acl);
         $this->addRulesForReviewer($acl);
+        $this->addRulesForGuestReviewer($acl);
         $this->addRulesForEditor($acl);
         $this->addRulesForSiteAdmin($acl);
         $this->addRulesForGlobalAdmin($acl);
@@ -595,6 +597,78 @@ class AclFactory implements FactoryInterface
         );
         $acl->allow(
             'reviewer',
+            'Omeka\Entity\User',
+            ['update', 'change-password', 'edit-keys'],
+            new IsSelfAssertion
+        );
+    }
+
+    /**
+     * Add rules for "guest_reviewer" role.
+     *
+     * @param Acl $acl
+     */
+    protected function addRulesForGuestReviewer(Acl $acl)
+    {
+        $acl->allow(
+            'guest_reviewer',
+            [
+                'Omeka\Controller\Admin\Index',
+                'Omeka\Controller\Admin\Item',
+                'Omeka\Controller\Admin\ItemSet',
+                'Omeka\Controller\Admin\Media',
+                'Omeka\Controller\Admin\ResourceTemplate',
+                'Omeka\Controller\Admin\Vocabulary',
+                'Omeka\Controller\Admin\ResourceClass',
+                'Omeka\Controller\Admin\Property',
+                'Omeka\Controller\Admin\SystemInfo',
+            ],
+            [
+                'index',
+                'browse',
+                'show',
+                'show-details',
+            ]
+        );
+        $acl->allow(
+            'guest_reviewer',
+            [
+                'Omeka\Controller\Admin\Item',
+                'Omeka\Controller\Admin\ItemSet',
+            ],
+            ['sidebar-select', 'search']
+        );
+        $acl->allow(
+            'guest_reviewer',
+            'Omeka\Controller\Admin\Asset',
+            'sidebar-select'
+        );
+        $acl->allow(
+            'reviewer',
+            'Omeka\Controller\Admin\Vocabulary',
+            ['classes', 'properties']
+        );
+        $acl->allow(
+            'guest_reviewer',
+            'Omeka\Entity\Resource',
+            'view-all'
+        );
+        $acl->allow(
+            'guest_reviewer',
+            'Omeka\Controller\Admin\User'
+        );
+        $acl->allow(
+            'guest_reviewer',
+            'Omeka\Api\Adapter\UserAdapter',
+            ['read', 'update', 'search']
+        );
+        $acl->allow(
+            'guest_reviewer',
+            'Omeka\Entity\User',
+            'read'
+        );
+        $acl->allow(
+            'guest_reviewer',
             'Omeka\Entity\User',
             ['update', 'change-password', 'edit-keys'],
             new IsSelfAssertion
